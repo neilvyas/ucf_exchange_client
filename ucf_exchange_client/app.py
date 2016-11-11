@@ -19,6 +19,9 @@ class Strategy:
         """Run the strategy against a connected exchange."""
         sock = get_conn(host, port)
         while not sock.closed:
+            # TODO: figure out how to run scheduled functions within this event loop,
+            # since get_msg is probably blocking. (We can make it non-blocking to make
+            # stuff easier).
             msg = msg_from_json(get_msg(sock))
             for outmsg in self._handle(msg):
                 # TODO if we're making orders then we should
@@ -45,7 +48,13 @@ class Strategy:
             self._add_handler(msg_type, handler)
             return handler
         return decorator
+    
+    def _schedule_func(self, func, timeout):
+        pass
 
     def schedule_func(self, timeout):
-        """Schedule a function to run every :timeout seconds."""
-        pass
+        """Decorator to schedule a function to run every :timeout seconds."""
+        def decorator(func):
+            self._schedule_func(func, timeout)
+            return func
+        return decorator
