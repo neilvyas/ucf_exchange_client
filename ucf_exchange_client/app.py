@@ -14,6 +14,10 @@ class Strategy:
 
         self.orderid = 0
         self.orders = dict()
+        
+        # TODO add a clock here, for scheduled functions as well as if strategies need
+        # access to a clock.
+        self.clock = None
 
     def run(self, host, port):
         """Run the strategy against a connected exchange."""
