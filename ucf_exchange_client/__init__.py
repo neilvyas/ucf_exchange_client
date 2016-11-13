@@ -13,5 +13,10 @@ __version__ = '0.1'
 
 
 from .app import Strategy
-# TODO export all of these
-from .RPC_types import Hello, Trade
+# We only expose the sent-type messages.
+from .RPC_types import (
+    Handshake,
+    Buy,
+    Sell,
+    Cancel,
+)
