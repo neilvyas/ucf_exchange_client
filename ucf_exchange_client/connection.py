@@ -1,4 +1,5 @@
 import asyncio
+import json
 import websockets
 
 from .RPC_types import msg_from_json, msg_to_json
@@ -16,13 +17,13 @@ class Connection:
 
     async def write(self, msg):
         """Write one message to the socket."""
-        json = msg_to_json(msg)
-        return self.websocket.send(json)
+        data = msg_to_rpc(msg)
+        return self.websocket.send(json.dumps(data))
 
     async def read(self):
         """Read one complete message from socket."""
-        json = await self.websocket.recv()
-        msg = msg_from_json(json)
+        data = await self.websocket.recv()
+        msg = msg_from_rpc(json.loads(data))
         return msg
 
     def _websocket_uri(self):
