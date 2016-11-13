@@ -14,7 +14,7 @@ class Strategy:
 
         self.orderid = 0
         self.orders = dict()
-        
+
         # TODO add a clock here, for scheduled functions as well as if strategies need
         # access to a clock.
         self.clock = None
@@ -52,7 +52,7 @@ class Strategy:
             self._add_handler(msg_type, handler)
             return handler
         return decorator
-    
+
     def _schedule_func(self, func, timeout):
         pass
 
