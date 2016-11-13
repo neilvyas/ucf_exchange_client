@@ -30,7 +30,8 @@ class Strategy:
         while True:
             msg = await self.conn.read()
             resp = await self._handle(msg)
-            for part in resp: self.conn.write(part)
+            for part in resp:
+                self.conn.write(part)
 
     def _handle(self, msg):
         """Update state and issue outbound messages."""
