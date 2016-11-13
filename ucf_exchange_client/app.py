@@ -1,6 +1,7 @@
 from collections import defaultdict
-from .utils.socket import get_msg, get_conn
-from .RPC_types import msg_from_json, msg_to_json
+import asyncio
+
+import .connection
 
 
 class Strategy:
@@ -21,16 +22,15 @@ class Strategy:
 
     def run(self, host, port):
         """Run the strategy against a connected exchange."""
-        sock = get_conn(host, port)
-        while not sock.closed:
-            # TODO: figure out how to run scheduled functions within this event loop,
-            # since get_msg is probably blocking. (We can make it non-blocking to make
-            # stuff easier).
-            msg = msg_from_json(get_msg(sock))
-            for outmsg in self._handle(msg):
-                # TODO if we're making orders then we should
-                # handle the orderid stuff automatically.
-                sock.write(msg_to_json(msg._asdict()))
+        self.conn = connection.create(host, port)
+        asyncio.get_event_loop().run_until_complete(self._handler())
+
+    async def _handler(self):
+        """Handles incoming messages and responds to them."""
+        while True:
+            msg = await self.conn.read()
+            resp = await self._handle(msg)
+            for part in resp: self.conn.write(part)
 
     def _handle(self, msg):
         """Update state and issue outbound messages."""
