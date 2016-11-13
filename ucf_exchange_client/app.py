@@ -1,7 +1,7 @@
 from collections import defaultdict
 import asyncio
 
-import .connection
+from ucf_exchange_client import connection
 
 
 class Strategy:
@@ -22,11 +22,11 @@ class Strategy:
 
     def run(self, host, port):
         """Run the strategy against a connected exchange."""
-        self.conn = connection.create(host, port)
-        asyncio.get_event_loop().run_until_complete(self._handler())
+        asyncio.get_event_loop().run_until_complete(self._run(host, port))
 
-    async def _handler(self):
-        """Handles incoming messages and responds to them."""
+    async def _run(self, host, port):
+        """Sets up the connection and handles incoming messages."""
+        self.conn = await connection.create(host, port)
         while True:
             msg = await self.conn.read()
             resp = await self._handle(msg)
