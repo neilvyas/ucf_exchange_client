@@ -11,8 +11,8 @@ class Connection:
         self.host = host
         self.port = port
 
-    def connect(self):
-        self.websocket = websockets.connect(self._websocket_uri())
+    async def connect(self):
+        self.websocket = await websockets.connect(self._websocket_uri())
 
     async def write(self, msg):
         """Write one message to the socket."""
@@ -21,14 +21,14 @@ class Connection:
 
     async def read(self):
         """Read one complete message from socket."""
-        json = await websocket.recv()
+        json = await self.websocket.recv()
         msg = msg_from_json(json)
         return msg
 
     def _websocket_uri(self):
-        return 'ws://%s:%s/'.format(self.host, self.port)
+        return 'ws://{}:{}/'.format(self.host, self.port)
 
-def create(host, port):
-    socket = Socket(host, port)
-    socket.connect()
-    return socket
+async def create(host, port):
+    conn = Connection(host, port)
+    await conn.connect()
+    return conn
