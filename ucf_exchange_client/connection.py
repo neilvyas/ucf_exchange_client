@@ -6,7 +6,7 @@ from .RPC_types import msg_from_json, msg_to_json
 
 
 class Connection:
-    """The connection to the UCF exchange backend."""
+    """The connection to the UCF exchange server."""
 
     def __init__(self, host, port):
         self.host = host
