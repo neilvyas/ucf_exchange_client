@@ -2,7 +2,7 @@ from ucf_exchange_client import Strategy
 
 market_maker = Strategy('mm')
 
-@market_maker.handle('Hello')
+@market_maker.handle('Handshake')
 def initialize(state, msg):
     state.theos = {}
     return []
