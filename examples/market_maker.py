@@ -16,4 +16,5 @@ def update_values(state, msg):
     return []
 
 
-market_maker.run('localhost', 8166)
+if __name__ == "__main__":
+    market_maker.run('localhost', 8166)
