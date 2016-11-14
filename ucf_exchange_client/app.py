@@ -29,7 +29,7 @@ class Strategy:
         self.conn = await connection.create(host, port)
         while True:
             msg = await self.conn.read()
-            resp = await self._handle(msg)
+            resp = self._handle(msg)
             for part in resp:
                 self.conn.write(part)
 
