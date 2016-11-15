@@ -1,5 +1,5 @@
 from collections import namedtuple
-from ucf_exchange_client import Strategy
+from ucf_exchange_client import Strategy, Buy, Sell
 
 
 # Stance on how to trade in a market.
