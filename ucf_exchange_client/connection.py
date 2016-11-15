@@ -2,7 +2,7 @@ import asyncio
 import json
 import websockets
 
-from .RPC_types import msg_from_json, msg_to_json
+from .RPC_types import msg_from_rpc, msg_to_rpc
 
 
 class Connection:
